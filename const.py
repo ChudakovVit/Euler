@@ -4,7 +4,7 @@ y0 = CELL_SIZE // 2  # отступ от вернего края
 COLORS = {0: 'white', 1: 'black'}  # выбор цвета для ячейки
 N = 10  # размер с учетом окаймления
 
-сonnectivity_components = {
+сonnectivity_components_2 = {
     0: [0, 0, 0, 0],
     3: [1, 0, 0, 0],
     1: [0, 1, 0, 0],
