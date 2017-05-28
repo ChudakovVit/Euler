@@ -22,6 +22,6 @@ def set_field(field):
     for i in range(N):
         for j in range(N):
             if i in (0, N-1) or j in (0, N-1):
-                add_cell(i, j, 1)
+                add_cell(i, j, 0)
             else:
                 add_cell(i, j, field[i-1][j-1])
