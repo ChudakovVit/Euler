@@ -11,8 +11,9 @@ def main():
     print()
     k_dict = get_conectivity_count(new_field, components=сonnectivity_components_2)
     print(k_dict)
-    # set_field(field)
-    # mainloop()
+    view_set_field(field)
+    view_add_info(k_dict)
+    mainloop()
 
 if __name__ == '__main__':
     main()

@@ -42,13 +42,22 @@ def add_edging(field):
                 new_field[i].append(field[i-1][j-1])
     return new_field
 
-def get_conectivity_count(field, components=сonnectivity_components_2):
-    n = components['n']
-    k_dict = {i: 0 for i in range(2**n**2)}
+def get_conectivity_count(field, components):
+    x = components['x']
+    y = components['y']
+    k_dict = {i: 0 for i in range(2**(x*y))}
     for i in range(N-1):
         for j in range(N-1):
-            temp_list = [field[i][j], field[i][j + 1], field[i + 1][j], field[i + 1][j + 1]]
+            r_list = [i+r for r in range(y)]
+            c_list = [j+c for c in range(x)]
+            temp_list = [field[r][c] for r in r_list for c in c_list]
             k_number = list(components.keys())[list(components.values()).index(temp_list)]
             k_dict[k_number] += 1
     return k_dict
 
+def dict_beautifier(k_dict):
+    dict_str = '\n'
+    for key, value in k_dict.items():
+        dict_str += 'K_{} = {}'.format(key, value)
+        dict_str += '\n'
+    return dict_str
