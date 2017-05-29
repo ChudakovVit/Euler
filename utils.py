@@ -1,4 +1,4 @@
-from const import *
+from view import *
 
 def file_input_field():
     file = open('input.txt')
@@ -11,6 +11,17 @@ def file_input_field():
         field.append(sub_field)
     file.close()
     return field
+
+def file_output_field(field):
+    file = open('input.txt', 'w')
+    for i in range(N-2):
+        sub_line = ''
+        for j in range(N-2):
+            sub_line += str(field[i][j])
+            sub_line += ' '
+        sub_line += '\n'
+        file.write(sub_line)
+    file.close()
 
 def console_input_field():
     field = []
@@ -42,16 +53,16 @@ def add_edging(field):
                 new_field[i].append(field[i-1][j-1])
     return new_field
 
-def get_conectivity_count(field, components):
-    x = components['x']
-    y = components['y']
+def get_conectivity_count(field):
+    x = сonnectivity_components['x']
+    y = сonnectivity_components['y']
     k_dict = {i: 0 for i in range(2**(x*y))}
     for i in range(N-1):
         for j in range(N-1):
             r_list = [i+r for r in range(y)]
             c_list = [j+c for c in range(x)]
             temp_list = [field[r][c] for r in r_list for c in c_list]
-            k_number = list(components.keys())[list(components.values()).index(temp_list)]
+            k_number = list(сonnectivity_components.keys())[list(сonnectivity_components.values()).index(temp_list)]
             k_dict[k_number] += 1
     return k_dict
 
@@ -61,3 +72,4 @@ def dict_beautifier(k_dict):
         dict_str += 'K_{} = {}'.format(key, value)
         dict_str += '\n'
     return dict_str
+
