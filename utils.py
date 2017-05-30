@@ -1,4 +1,4 @@
-from view import *
+from const import *
 
 def file_input_field():
     file = open('input.txt')
@@ -12,29 +12,18 @@ def file_input_field():
     file.close()
     return field
 
-def file_output_field(field):
+def file_output_field(field=None):
     file = open('input.txt', 'w')
     for i in range(N-2):
         sub_line = ''
         for j in range(N-2):
-            sub_line += str(field[i][j])
+            sub_line += str(field[i][j]) if field else str(0)
             sub_line += ' '
         sub_line += '\n'
         file.write(sub_line)
     file.close()
 
-def console_input_field():
-    field = []
-    for i in range(N-2):
-        field.append([])
-        for j in range(N-2):
-            value = int(input('field[{i}][{j}] = '.format(i=i, j=j)))
-            field[i].append(value)
-
-    return field
-
 def console_print_field(field):
-    field_str = ''
     for i in range(len(field)):
         field_str = ''
         for j in range(len(field[i])):
@@ -69,7 +58,30 @@ def get_conectivity_count(field):
 def dict_beautifier(k_dict):
     dict_str = '\n'
     for key, value in k_dict.items():
-        dict_str += 'K_{} = {}'.format(key, value)
+        dict_str += 'K{} = {}'.format(key, value)
         dict_str += '\n'
     return dict_str
 
+def add_log(func, arg, msg=''):
+    print('----------------------------------')
+    print(msg)
+    func(arg)
+    print('----------------------------------')
+
+
+
+
+
+
+
+
+"""--------------DEPRECATED--------------"""
+
+def console_input_field():
+    field = []
+    for i in range(N-2):
+        field.append([])
+        for j in range(N-2):
+            value = int(input('field[{i}][{j}] = '.format(i=i, j=j)))
+            field[i].append(value)
+    return field

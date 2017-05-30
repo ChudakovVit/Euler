@@ -1,7 +1,5 @@
 from tkinter import *
-from const import *
 from utils import *
-from main import *
 
 root = Tk()
 root.title('Chudakov Vitaly IT-31')
@@ -25,8 +23,11 @@ def view_set_field(field):
                 view_add_cell(i, j, 0)
             else:
                 view_add_cell(i, j, field[i-1][j-1])
+    add_log(console_print_field, field, 'Field')
     new_field = add_edging(field)
+    add_log(console_print_field, field, 'Field with edging')
     k_dict = get_conectivity_count(new_field)
+    add_log(print, k_dict, 'Conectivity components count')
     view_add_info(k_dict)
 
 def view_add_info(k_dict):
@@ -39,11 +40,9 @@ def view_on_click(event):
     if not ((0 <= x < N-2) and (0 <= y < N-2)):
         return
     update_field(x, y)
-    print("clicked at", x, y)
 canvas.bind("<Button-1>", view_on_click)
 
 def update_field(x, y):
-    # view_add_cell(y+1, x+1, 0)
     field = file_input_field()
     field[y][x] = 1-field[y][x]
     file_output_field(field)
