@@ -20,15 +20,15 @@ def view_add_cell(row, column, color):
 
 def view_set_field():
 
-    for i in range(N):
-        for j in range(N):
-            val = 0 if i in (0, N-1) or j in (0, N-1) else FIELD.get()[i-1][j-1]
+    for i in range(FIELD.get_N()):
+        for j in range(FIELD.get_N()):
+            val = 0 if i in (0, FIELD.get_N()-1) or j in (0, FIELD.get_N()-1) else FIELD.get()[i-1][j-1]
             view_add_cell(i, j, val)
 
     # add_log(console_print_field, None, 'Field')
     # add_log(console_print_field, None, 'Field with edging')
-    k_dict = get_conectivity_count()
-    # add_log(print, k_dict, 'Conectivity components count')
+    k_dict = get_connectivity_count()
+    # add_log(print, k_dict, 'Connectivity components count')
     view_add_info(k_dict)
 
 
@@ -44,7 +44,7 @@ def view_add_info(k_dict):
 def view_on_click(event):
     x = (event.x+x0)//CELL_SIZE - 2
     y = (event.y+y0)//CELL_SIZE - 2
-    if not ((0 <= x < N-2) and (0 <= y < N-2)):
+    if not ((0 <= x < FIELD.get_N()-2) and (0 <= y < FIELD.get_N()-2)):
         return
     update_field(x, y)
 canvas.bind("<Button-1>", view_on_click)
