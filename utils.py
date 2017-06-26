@@ -38,7 +38,7 @@ def get_connectivity_count():
 def dict_beautifier(k_dict):
     dict_str = '\n'
     for key, value in k_dict.items():
-        dict_str += 'K{} = {}'.format(key, value)
+        dict_str += 'K[{}] = {}'.format(key, value)
         dict_str += '\n'
     return dict_str
 
@@ -57,7 +57,7 @@ def generate_field():
                         FIELD.set_cell(sub_i+1, sub_j+1, сonnectivity_components[k][3])
                         # print('i, j, k ', i, j, k, сonnectivity_components[k])
                         # print()
-                        file_output_field()
+                        # file_output_field()
     FIELD.set(file_input_field())
     # TODO
     # file_output_field()

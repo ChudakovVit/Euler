@@ -35,10 +35,10 @@ def view_set_field():
 def view_add_info(k_dict):
     k_dict_label = Label(root, text=dict_beautifier(k_dict), bg='grey', justify=LEFT)
     k_dict_label.place(x=350, y=20)
-    hi_1 = Label(root, text='Hi+1 = {}'.format(str(k_dict[4]-k_dict[10]-k_dict[12])), bg='grey', justify=LEFT)
-    hi_1.place(x=500, y=100)
-    hi_2 = Label(root, text='Hi+2 = {}'.format(str(k_dict[4]+k_dict[9]-k_dict[12])), bg='grey', justify=LEFT)
-    hi_2.place(x=500, y=200)
+    hi_1 = Label(root, text='Сильная связность: χ = {}    '.format(str(k_dict[4]-k_dict[10]-k_dict[12])), bg='grey', justify=LEFT)
+    hi_1.place(x=450, y=100)
+    hi_2 = Label(root, text='Слабая связность: χ = {}    '.format(str(k_dict[4]+k_dict[9]-k_dict[12])), bg='grey', justify=LEFT)
+    hi_2.place(x=450, y=200)
 
 
 def view_on_click(event):
