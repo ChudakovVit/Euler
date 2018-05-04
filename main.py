@@ -1,12 +1,11 @@
 import view
-from field import *
 from utils import *
 from generate import *
 
 
 def main():
-    FIELD.set(file_input_field())
-    FIELD.set_N(10)
+    FIELD.set(get_zero_field(N-2))
+    FIELD.set_side_size(N)
     view.set_field()
     generate_3_3()
     # generate_field()

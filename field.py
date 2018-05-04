@@ -12,27 +12,44 @@ def singleton(cls):
 class Field:
     def __init__(self):
         self.field = []
-        self.N = 0
+        self.side_size = 0
 
     def get(self):
+        """ Геттер для поля
+        """
         return self.field
 
     def set(self, field):
+        """ Сеттер для поля
+        """
         self.field = field
 
     def change_cell(self, x, y):
+        """ Изменить значение в ячейке на противоположное
+        """
         change_field = self.field
         change_field[y][x] = 1 - change_field[y][x]
         self.set(change_field)
 
     def set_cell(self, x, y, color):
+        """ Задать конкретной ячейке значение
+        """
         self.field[y][x] = color
 
-    def get_N(self):
-        return self.N
+    def get_side_size(self):
+        """ Получить размер поля с окаймлением
+        """
+        return self.side_size-2
 
-    def set_N(self, N):
-        self.N = N
+    def set_side_size(self, side_size):
+        """ Задать размер поля с окаймлением
+        """
+        self.side_size = side_size
+
+    def get_edging_size(self):
+        """ Получить размер поля с окаймлением
+        """
+        return self.side_size
 
 
 FIELD = Field()

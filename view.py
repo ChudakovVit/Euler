@@ -20,10 +20,10 @@ def add_cell(row, column, color):
 
 
 def set_field():
-
-    for i in range(FIELD.get_N()):
-        for j in range(FIELD.get_N()):
-            val = 0 if i in (0, FIELD.get_N()-1) or j in (0, FIELD.get_N()-1) else FIELD.get()[i-1][j-1]
+    edging_size = FIELD.get_edging_size()
+    for i in range(edging_size):
+        for j in range(edging_size):
+            val = 0 if i in (0, edging_size-1) or j in (0, edging_size-1) else FIELD.get()[i-1][j-1]
             view.add_cell(i, j, val)
 
     k_dict = get_connectivity_count()
@@ -40,9 +40,12 @@ def add_info(k_dict):
 
 
 def on_click(event):
+    """
+    Обработчик нажатия на клетку, для изменения цвета на противоположный
+    """
     x = (event.x+x0)//CELL_SIZE - 2
     y = (event.y+y0)//CELL_SIZE - 2
-    if not ((0 <= x < FIELD.get_N()-2) and (0 <= y < FIELD.get_N()-2)):
+    if not ((0 <= x < FIELD.get_side_size()) and (0 <= y < FIELD.get_side_size())):
         return
     update_field(x, y)
 

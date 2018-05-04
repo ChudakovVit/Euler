@@ -13,10 +13,11 @@ def console_print_field():
 
 def add_edging():
     ext_field = []
-    for i in range(FIELD.get_N()):
+    edging_size = FIELD.get_edging_size()
+    for i in range(edging_size):
         ext_field.append([])
-        for j in range(FIELD.get_N()):
-            val = 0 if i in (0, FIELD.get_N()-1) or j in (0, FIELD.get_N()-1) else FIELD.get()[i-1][j-1]
+        for j in range(edging_size):
+            val = 0 if i in (0, edging_size-1) or j in (0, edging_size-1) else FIELD.get()[i-1][j-1]
             ext_field[i].append(val)
     return ext_field
 
@@ -26,8 +27,8 @@ def get_connectivity_count():
     x = сonnectivity_components['x']
     y = сonnectivity_components['y']
     k_dict = {i: 0 for i in range(2**(x*y))}
-    for i in range(FIELD.get_N()-1):
-        for j in range(FIELD.get_N()-1):
+    for i in range(FIELD.get_edging_size()-1):
+        for j in range(FIELD.get_edging_size()-1):
             r_list = [i+r for r in range(y)]
             c_list = [j+c for c in range(x)]
             temp_list = [extend_field[r][c] for r in r_list for c in c_list]
@@ -43,13 +44,24 @@ def dict_beautifier(k_dict):
         dict_str += '\n'
     return dict_str
 
+
+def get_zero_field(size):
+    """
+    Генерирует нулевое поле заданного размера
+    :param size: Размер поля без окаймления
+    :return: массив массивов
+    """
+    return [list(item) for item in [[0] * size] * size]
+
+
 """--------------DEPRECATED--------------"""
+
 
 def console_input_field():
     field = []
-    for i in range(FIELD.get_N()-2):
+    for i in range(FIELD.side_size()):
         field.append([])
-        for j in range(FIELD.get_N()-2):
+        for j in range(FIELD.side_size()):
             value = int(input('field[{i}][{j}] = '.format(i=i, j=j)))
             field[i].append(value)
     return field
@@ -70,9 +82,9 @@ def file_input_field():
 
 def file_output_field():
     file = open('db.txt', 'a')  # w
-    for i in range(FIELD.get_N()-2):
+    for i in range(FIELD.side_size()):
         sub_line = ''
-        for j in range(FIELD.get_N()-2):
+        for j in range(FIELD.side_size()):
             sub_line += str(FIELD.get()[i][j]) if FIELD.get() else str(0)
             sub_line += ' '
         sub_line += '\n'
