@@ -1,8 +1,9 @@
+import view
 from tkinter import *
 from utils import *
 
 root = Tk()
-root.title('Chudakov Vitaly IT-31')
+root.title('Chudakov Vitaly')
 root.geometry('660x330')
 root.resizable(False, False)
 
@@ -10,7 +11,7 @@ canvas = Canvas(root, bg='grey')
 canvas.pack(fill=BOTH, expand=1)
 
 
-def view_add_cell(row, column, color):
+def add_cell(row, column, color):
     x1 = x0 + column * CELL_SIZE
     y1 = y0 + row * CELL_SIZE
     x2 = x1 + CELL_SIZE
@@ -18,21 +19,18 @@ def view_add_cell(row, column, color):
     canvas.create_rectangle(x1, y1, x2, y2, fill=COLORS[color], outline=COLORS[1-color])
 
 
-def view_set_field():
+def set_field():
 
     for i in range(FIELD.get_N()):
         for j in range(FIELD.get_N()):
             val = 0 if i in (0, FIELD.get_N()-1) or j in (0, FIELD.get_N()-1) else FIELD.get()[i-1][j-1]
-            view_add_cell(i, j, val)
+            view.add_cell(i, j, val)
 
-    # add_log(console_print_field, None, 'Field')
-    # add_log(console_print_field, None, 'Field with edging')
     k_dict = get_connectivity_count()
-    # add_log(print, k_dict, 'Connectivity components count')
-    view_add_info(k_dict)
+    view.add_info(k_dict)
 
 
-def view_add_info(k_dict):
+def add_info(k_dict):
     k_dict_label = Label(root, text=dict_beautifier(k_dict), bg='grey', justify=LEFT)
     k_dict_label.place(x=350, y=20)
     hi_1 = Label(root, text='Сильная связность: χ = {}    '.format(str(k_dict[4]-k_dict[10]-k_dict[12])), bg='grey', justify=LEFT)
@@ -41,15 +39,17 @@ def view_add_info(k_dict):
     hi_2.place(x=450, y=200)
 
 
-def view_on_click(event):
+def on_click(event):
     x = (event.x+x0)//CELL_SIZE - 2
     y = (event.y+y0)//CELL_SIZE - 2
     if not ((0 <= x < FIELD.get_N()-2) and (0 <= y < FIELD.get_N()-2)):
         return
     update_field(x, y)
-canvas.bind("<Button-1>", view_on_click)
+
+
+canvas.bind("<Button-1>", on_click)
 
 
 def update_field(x, y):
     FIELD.change_cell(x, y)
-    view_set_field()
+    set_field()
