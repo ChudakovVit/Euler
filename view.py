@@ -56,3 +56,5 @@ canvas.bind("<Button-1>", on_click)
 def update_field(x, y):
     FIELD.change_cell(x, y)
     set_field()
+
+    file_output_field()

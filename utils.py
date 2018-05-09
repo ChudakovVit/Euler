@@ -54,6 +54,33 @@ def get_zero_field(size):
     return [list(item) for item in [[0] * size] * size]
 
 
+def get_field_info_string():
+    """
+    Получить информацию о поле и компонентах связности строкой для записи
+    :return: str(dict)
+    """
+    k_dict = get_connectivity_count()
+    return str({
+        'size': str(FIELD.get_side_size()),
+        'field': str(FIELD.get()),
+        'curve': str(k_dict),
+        'strong': str(k_dict[4] - k_dict[10] - k_dict[12]),
+        'weak': str(k_dict[4] + k_dict[9] - k_dict[12])
+    })
+
+
+def get_field_info_eval(field_info):
+    """
+    Получить словарь со всей информацией о полях
+    :param field_info:
+    :return: dict
+    """
+    field_info = eval(field_info)
+    for key, value in field_info.items():
+        field_info[key] = eval(value)
+    return field_info
+
+
 """--------------DEPRECATED--------------"""
 
 
@@ -82,12 +109,13 @@ def file_input_field():
 
 def file_output_field():
     file = open('db.txt', 'a')  # w
-    for i in range(FIELD.side_size()):
-        sub_line = ''
-        for j in range(FIELD.side_size()):
-            sub_line += str(FIELD.get()[i][j]) if FIELD.get() else str(0)
-            sub_line += ' '
-        sub_line += '\n'
-        file.write(sub_line)
-    file.write(str(get_connectivity_count())+'\n\n')
+    k_dict = get_connectivity_count()
+    field_info = str({
+        'size': str(FIELD.get_side_size()),
+        'field': str(FIELD.get()),
+        'curve': str(k_dict),
+        'strong': str(k_dict[4] - k_dict[10] - k_dict[12]),
+        'weak': str(k_dict[4] + k_dict[9] - k_dict[12])
+    })
+    file.write(field_info + '\n')
     file.close()
