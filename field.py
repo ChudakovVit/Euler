@@ -13,6 +13,8 @@ class Field:
     def __init__(self):
         self.field = []
         self.side_size = 0
+        self.x_side_size = 0
+        self.y_side_size = 0
 
     def get(self):
         """ Геттер для поля

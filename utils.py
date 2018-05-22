@@ -109,13 +109,6 @@ def file_input_field():
 
 def file_output_field():
     file = open('db.txt', 'a')  # w
-    k_dict = get_connectivity_count()
-    field_info = str({
-        'size': str(FIELD.get_side_size()),
-        'field': str(FIELD.get()),
-        'curve': str(k_dict),
-        'strong': str(k_dict[4] - k_dict[10] - k_dict[12]),
-        'weak': str(k_dict[4] + k_dict[9] - k_dict[12])
-    })
+    field_info = get_field_info_string()
     file.write(field_info + '\n')
     file.close()
