@@ -37,5 +37,6 @@ def generate_field(x, y):
     for i in range(2**(x*y)):
         print(i)
         FIELD.set(get_field_from_number(i, x, y))
-        FIELD.set_side_size(x+2)
+        FIELD.set_x_side_size(x+2)
+        FIELD.set_y_side_size(y+2)
         file_output_field()

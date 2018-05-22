@@ -27,6 +27,7 @@ def set_field():
             view.add_cell(i, j, val)
 
     k_dict = get_connectivity_count()
+    print(FIELD.get())
     view.add_info(k_dict)
 
 

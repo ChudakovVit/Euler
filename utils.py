@@ -27,8 +27,8 @@ def get_connectivity_count():
     x = сonnectivity_components['x']
     y = сonnectivity_components['y']
     k_dict = {i: 0 for i in range(2**(x*y))}
-    for i in range(FIELD.get_edging_size()-1):
-        for j in range(FIELD.get_edging_size()-1):
+    for i in range(FIELD.get_x_edging_size()-1):
+        for j in range(FIELD.get_y_edging_size()-1):
             r_list = [i+r for r in range(y)]
             c_list = [j+c for c in range(x)]
             temp_list = [extend_field[r][c] for r in r_list for c in c_list]
@@ -61,7 +61,8 @@ def get_field_info_string():
     """
     k_dict = get_connectivity_count()
     return str({
-        'size': str(FIELD.get_side_size()),
+        'size_x': str(FIELD.get_x_side_size()),
+        'size_y': str(FIELD.get_y_side_size()),
         'field': str(FIELD.get()),
         'curve': str(k_dict),
         'strong': str(k_dict[4] - k_dict[10] - k_dict[12]),

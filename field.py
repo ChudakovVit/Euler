@@ -43,15 +43,47 @@ class Field:
         """
         return self.side_size-2
 
+    def get_x_side_size(self):
+        """ Получить размер поля с окаймлением по высоте
+        """
+        return self.x_side_size-2
+
+    def get_y_side_size(self):
+        """ Получить размер поля с окаймлением по ширине
+        """
+        return self.y_side_size-2
+
     def set_side_size(self, side_size):
         """ Задать размер поля с окаймлением
         """
         self.side_size = side_size
+        self.x_side_size = side_size
+        self.y_side_size = side_size
+
+    def set_x_side_size(self, side_size):
+        """ Задать размер поля с окаймлением по высоте
+        """
+        self.x_side_size = side_size
+
+    def set_y_side_size(self, side_size):
+        """ Задать размер поля с окаймлением по ширине
+        """
+        self.y_side_size = side_size
 
     def get_edging_size(self):
         """ Получить размер поля с окаймлением
         """
         return self.side_size
+
+    def get_x_edging_size(self):
+        """ Получить размер поля с окаймлением по высоте
+        """
+        return self.x_side_size
+
+    def get_y_edging_size(self):
+        """ Получить размер поля с окаймлением по ширине
+        """
+        return self.y_side_size
 
 
 FIELD = Field()
