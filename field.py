@@ -110,26 +110,31 @@ class Field:
         def _change_cells(x, y):
             """ Меняет на спецсимвол клетку и все ближлежайшие
             """
+            is_changed = False
             for i in range(-1, 2):
                 for j in range(-1, 2):
                     constraint = 0 in [i, j] if not type else True
-                    if constraint and field_copy[x][y]:
+                    if constraint and field_copy[x+i][y+j] == 1:
                         field_copy[x+i][y+j] = -1
+                        if i == j and i != 0:
+                            is_changed = True
+            if not is_changed:
+                field_copy[x][y] = 1
 
         field_copy = list(list(item) for item in FIELD.add_edging())
-        print(field_copy)
         for i in range(1, FIELD.get_x_side_size() - 1):
             for j in range(1, FIELD.get_y_side_size() - 1):
                 if field_copy[i][j]:
                     _change_cells(i, j)
 
-        print(field_copy)
-
+        find_one = False
         for i in range(1, FIELD.get_x_side_size() - 1):
             for j in range(1, FIELD.get_y_side_size() - 1):
                 if field_copy[i][j] == 1:
-                    return False
-
+                    if not find_one:
+                        find_one = True
+                    else:
+                        return False
         return True
 
 
