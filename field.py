@@ -85,5 +85,52 @@ class Field:
         """
         return self.y_side_size
 
+    def add_edging(self):
+        """
+        Возвращает поле с окаймлением
+        :return:
+        """
+        ext_field = []
+        x_edging_size = FIELD.get_x_edging_size()
+        y_edging_size = FIELD.get_y_edging_size()
+        for i in range(x_edging_size):
+            ext_field.append([])
+            for j in range(y_edging_size):
+                val = 0 if i in (0, x_edging_size - 1) or j in (0, y_edging_size - 1) else FIELD.get()[i - 1][j - 1]
+                ext_field[i].append(val)
+        return ext_field
+
+    def is_connectedly(self, type=0):
+        """
+        Метод для определения связности поля
+        :param type: тип связности: 0 - сильная, 1 - слабая
+        :return: bool
+        """
+
+        def _change_cells(x, y):
+            """ Меняет на спецсимвол клетку и все ближлежайшие
+            """
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    constraint = 0 in [i, j] if not type else True
+                    if constraint and field_copy[x][y]:
+                        field_copy[x+i][y+j] = -1
+
+        field_copy = list(list(item) for item in FIELD.add_edging())
+        print(field_copy)
+        for i in range(1, FIELD.get_x_side_size() - 1):
+            for j in range(1, FIELD.get_y_side_size() - 1):
+                if field_copy[i][j]:
+                    _change_cells(i, j)
+
+        print(field_copy)
+
+        for i in range(1, FIELD.get_x_side_size() - 1):
+            for j in range(1, FIELD.get_y_side_size() - 1):
+                if field_copy[i][j] == 1:
+                    return False
+
+        return True
+
 
 FIELD = Field()

@@ -11,19 +11,8 @@ def console_print_field():
         print(field_str)
 
 
-def add_edging():
-    ext_field = []
-    edging_size = FIELD.get_edging_size()
-    for i in range(edging_size):
-        ext_field.append([])
-        for j in range(edging_size):
-            val = 0 if i in (0, edging_size-1) or j in (0, edging_size-1) else FIELD.get()[i-1][j-1]
-            ext_field[i].append(val)
-    return ext_field
-
-
 def get_connectivity_count():
-    extend_field = add_edging()
+    extend_field = FIELD.add_edging()
     x = сonnectivity_components['x']
     y = сonnectivity_components['y']
     k_dict = {i: 0 for i in range(2**(x*y))}
@@ -108,8 +97,14 @@ def file_input_field():
     return field
 
 
-def file_output_field():
-    file = open('db.txt', 'a')  # w
+def file_output_field(x='', y=''):
+    """
+    Записывает в файл полную информацию о поле
+    :param x: размер поля в высоту (если есть)
+    :param y: размер поля в ширину (если есть)
+    """
+    file_name = 'field_info{}.txt'.format('_'+(str(x)+'_'+str(y)) if x and y else '')
+    file = open(file_name, 'a')  # w
     field_info = get_field_info_string()
     file.write(field_info + '\n')
     file.close()
