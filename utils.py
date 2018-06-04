@@ -16,8 +16,8 @@ def get_connectivity_count():
     x = сonnectivity_components['x']
     y = сonnectivity_components['y']
     k_dict = {i: 0 for i in range(2**(x*y))}
-    for i in range(FIELD.get_x_edging_size()-1):
-        for j in range(FIELD.get_y_edging_size()-1):
+    for i in range(FIELD.get_y_edging_size()-1):
+        for j in range(FIELD.get_x_edging_size()-1):
             r_list = [i+r for r in range(y)]
             c_list = [j+c for c in range(x)]
             temp_list = [extend_field[r][c] for r in r_list for c in c_list]
@@ -34,13 +34,15 @@ def dict_beautifier(k_dict):
     return dict_str
 
 
-def get_zero_field(size):
+def get_zero_field(size, y_size=-1):
     """
     Генерирует нулевое поле заданного размера
     :param size: Размер поля без окаймления
     :return: массив массивов
     """
-    return [list(item) for item in [[0] * size] * size]
+    if y_size == -1:
+        y_size = size
+    return [list(item) for item in [[0] * size] * y_size]
 
 
 def get_field_info_string():
@@ -50,12 +52,12 @@ def get_field_info_string():
     """
     k_dict = get_connectivity_count()
     return str({
-        'size_x': str(FIELD.get_x_side_size()),
-        'size_y': str(FIELD.get_y_side_size()),
-        'field': str(FIELD.get()),
-        'curve': str(k_dict),
-        'strong': str(k_dict[4] - k_dict[10] - k_dict[12]),
-        'weak': str(k_dict[4] + k_dict[9] - k_dict[12])
+        'sc': str(FIELD.is_connectedly(type=0)),  # strong connectedly
+        'wc': str(FIELD.is_connectedly(type=1)),  # weak connectedly
+        's': str(k_dict[4] - k_dict[10] - k_dict[12]),  # strong
+        'w': str(k_dict[4] + k_dict[9] - k_dict[12]),  # weak
+        'f': str(FIELD.get()),  # field
+        'c': str(k_dict)  # curve
     })
 
 

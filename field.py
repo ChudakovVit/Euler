@@ -93,10 +93,10 @@ class Field:
         ext_field = []
         x_edging_size = FIELD.get_x_edging_size()
         y_edging_size = FIELD.get_y_edging_size()
-        for i in range(x_edging_size):
+        for i in range(y_edging_size):
             ext_field.append([])
-            for j in range(y_edging_size):
-                val = 0 if i in (0, x_edging_size - 1) or j in (0, y_edging_size - 1) else FIELD.get()[i - 1][j - 1]
+            for j in range(x_edging_size):
+                val = 0 if i in (0, y_edging_size - 1) or j in (0, x_edging_size - 1) else FIELD.get()[i - 1][j - 1]
                 ext_field[i].append(val)
         return ext_field
 
@@ -107,34 +107,42 @@ class Field:
         :return: bool
         """
 
+        def _get_first_fill(value=1):
+            """ Возвращает первую закрашенную ячейку
+            """
+            for i in range(1, FIELD.get_y_edging_size() - 1):
+                for j in range(1, FIELD.get_x_edging_size() - 1):
+                    if field_copy[i][j] == value:
+                        return i, j
+            return -1, -1
+
         def _change_cells(x, y):
             """ Меняет на спецсимвол клетку и все ближлежайшие
             """
-            is_changed = False
             for i in range(-1, 2):
                 for j in range(-1, 2):
-                    constraint = 0 in [i, j] if not type else True
+                    # Условие на только нужные нам клетки
+                    constraint = 0 in [i, j] if type == 0 else True
                     if constraint and field_copy[x+i][y+j] == 1:
                         field_copy[x+i][y+j] = -1
-                        if i == j and i != 0:
-                            is_changed = True
-            if not is_changed:
-                field_copy[x][y] = 1
+                        _change_cells(x+i, y+j)
+
 
         field_copy = list(list(item) for item in FIELD.add_edging())
-        for i in range(1, FIELD.get_x_side_size() - 1):
-            for j in range(1, FIELD.get_y_side_size() - 1):
-                if field_copy[i][j]:
-                    _change_cells(i, j)
+        x, y = _get_first_fill()
+        if x != -1:
+            _change_cells(x, y)
 
-        find_one = False
-        for i in range(1, FIELD.get_x_side_size() - 1):
-            for j in range(1, FIELD.get_y_side_size() - 1):
-                if field_copy[i][j] == 1:
-                    if not find_one:
-                        find_one = True
-                    else:
-                        return False
+        print('*********************')
+        for item in field_copy:
+            print(item)
+
+        x, y = _get_first_fill()
+        x_, y_ = _get_first_fill(value=-1)
+        print(x, y)
+        print(x_, y_)
+        if x != -1 and x_ != -1:
+            return False
         return True
 
 
