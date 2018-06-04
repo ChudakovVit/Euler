@@ -80,9 +80,6 @@ def get_field_info_eval(field_info):
     return field_info
 
 
-"""--------------DEPRECATED--------------"""
-
-
 def console_input_field():
     field = []
     for i in range(FIELD.side_size()):

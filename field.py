@@ -93,7 +93,6 @@ class Field:
         ext_field = []
         x_edging_size = FIELD.get_x_edging_size()
         y_edging_size = FIELD.get_y_edging_size()
-        print('x ', x_edging_size, ' y ', y_edging_size)
         for i in range(y_edging_size):
             ext_field.append([])
             for j in range(x_edging_size):
