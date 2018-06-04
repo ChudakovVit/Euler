@@ -17,14 +17,14 @@ def get_field_from_number(number, x, y):
     # Перобразуем число к последовательности нулей и единиц
     bin_number = str(bin(number)[2:])
     bin_number = '0'*(x*y-len(bin_number)) + bin_number
-    x_list = []
-    for sub_x in range(x):
-        y_list = []
-        for sub_y in range(y):
-            y_list.append(int(bin_number[0]))
+    y_list = []
+    for sub_y in range(y):
+        x_list = []
+        for sub_x in range(x):
+            x_list.append(int(bin_number[0]))
             bin_number = bin_number[1:]
-        x_list.append(y_list)
-    return x_list
+        y_list.append(x_list)
+    return y_list
 
 
 def generate_field(x, y):

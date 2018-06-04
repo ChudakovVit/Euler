@@ -93,6 +93,7 @@ class Field:
         ext_field = []
         x_edging_size = FIELD.get_x_edging_size()
         y_edging_size = FIELD.get_y_edging_size()
+        print('x ', x_edging_size, ' y ', y_edging_size)
         for i in range(y_edging_size):
             ext_field.append([])
             for j in range(x_edging_size):
@@ -127,20 +128,13 @@ class Field:
                         field_copy[x+i][y+j] = -1
                         _change_cells(x+i, y+j)
 
-
         field_copy = list(list(item) for item in FIELD.add_edging())
         x, y = _get_first_fill()
         if x != -1:
             _change_cells(x, y)
 
-        print('*********************')
-        for item in field_copy:
-            print(item)
-
         x, y = _get_first_fill()
         x_, y_ = _get_first_fill(value=-1)
-        print(x, y)
-        print(x_, y_)
         if x != -1 and x_ != -1:
             return False
         return True

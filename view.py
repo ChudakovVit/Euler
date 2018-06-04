@@ -43,9 +43,9 @@ def add_info(k_dict):
     hi_3 = Label(root, text='Связно сильно: {}'.format(FIELD.is_connectedly(type=0)), bg='grey',
                  justify=LEFT)
     hi_3.place(x=450, y=200)
-    # hi_4 = Label(root, text='Связно слабо: {}'.format(FIELD.is_connectedly(type=1)), bg='grey',
-    #              justify=LEFT)
-    # hi_4.place(x=450, y=250)
+    hi_4 = Label(root, text='Связно слабо: {}'.format(FIELD.is_connectedly(type=1)), bg='grey',
+                 justify=LEFT)
+    hi_4.place(x=450, y=250)
 
 
 def on_click(event):

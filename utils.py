@@ -50,10 +50,17 @@ def get_field_info_string():
     Получить информацию о поле и компонентах связности строкой для записи
     :return: str(dict)
     """
+
+    strong_connectedly = FIELD.is_connectedly(type=0)
+    waek_connectedly = FIELD.is_connectedly(type=1)
+
+    if not any([strong_connectedly, waek_connectedly]):
+        return 'not_connectedly'
+
     k_dict = get_connectivity_count()
     return str({
-        'sc': str(FIELD.is_connectedly(type=0)),  # strong connectedly
-        'wc': str(FIELD.is_connectedly(type=1)),  # weak connectedly
+        'sc': str(strong_connectedly),  # strong connectedly
+        'wc': str(waek_connectedly),  # weak connectedly
         's': str(k_dict[4] - k_dict[10] - k_dict[12]),  # strong
         'w': str(k_dict[4] + k_dict[9] - k_dict[12]),  # weak
         'f': str(FIELD.get()),  # field
