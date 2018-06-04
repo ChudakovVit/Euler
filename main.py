@@ -4,7 +4,7 @@ from generate import *
 
 
 def main():
-    # x, y = 2, 1
+    # x, y = 5, 7
     # z_field = get_zero_field(x, y)
     # FIELD.set(z_field)
     # FIELD.set_x_side_size(len(z_field[0])+2)
@@ -13,13 +13,26 @@ def main():
     # view.set_field()
     # view.mainloop()
 
-    # generate_field(5, 4)
-    #
-    for i in range(1, 4):
-        for j in range(1, 4):
-            generate_field(i, j)
-            if i != j:
-                generate_field(j, i)
+    # get_from_file(1, 2, 3)
+
+    with_type_0 = get_count_by_type(3, 3, 0)
+    print(with_type_0)
+
+    with_type_1 = get_count_by_type(3, 3, 1)
+    print(with_type_1)
+
+
+    with_type_2 = get_count_by_type(3, 3, 2)
+    print(with_type_2)
+
+    print('res :', with_type_1 + with_type_2)
+    # generate_field(4, 5)
+    # #
+    # for i in range(3, 5):
+    #     for j in range(3, 5):
+    #         generate_field(i, j)
+    #         if i != j:
+    #             generate_field(j, i)
 
 
 

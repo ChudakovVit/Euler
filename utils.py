@@ -1,3 +1,4 @@
+import re
 from field import *
 from const import *
 
@@ -109,8 +110,49 @@ def file_output_field(x='', y=''):
     :param x: размер поля в высоту (если есть)
     :param y: размер поля в ширину (если есть)
     """
-    file_name = 'field_info{}.txt'.format('_'+(str(x)+'_'+str(y)) if x and y else '')
+    file_name = get_file_name(x, y)
     file = open(file_name, 'a')  # w
     field_info = get_field_info_string()
     file.write(field_info + '\n')
     file.close()
+
+
+def get_from_file(x='', y='', number=0):
+    """ Берем строку из файла
+    """
+    file_name = get_file_name(x, y)
+    file_lines = open(file_name, 'r').readlines()
+
+    return get_field_info_eval(file_lines.pop(number))
+
+
+def get_file_name(x='', y=''):
+    """ Хелпер для получения имени файла (для записи и чтения)
+    """
+    return 'field_info{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
+
+
+def get_count_by_type(x='', y='', type=0):
+    """
+    Считает в заданном файле количество изображений того или иного типа
+    :param x: Размерность матрицы
+    :param y: Размерность матрицы
+    :param type: 0 - сильно связные, 1 - слабо, 2 - несвязные
+    :return: Количество изобрабражений заданного типа в заданном файле
+    """
+    file_name = get_file_name(x, y)
+    file_read = open(file_name, 'r').read()
+
+    if type == 0:
+        pattern = '''sc': 'True'''
+    elif type == 1:
+        pattern = '''wc': 'True'''
+    else:
+        pattern = 'not_connectedly'
+
+    find_in_file = re.findall(pattern, file_read)
+    return len(find_in_file)
+
+
+def get_all_counts(x='', y='', type=0):
+    pass
