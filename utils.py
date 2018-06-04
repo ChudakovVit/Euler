@@ -154,5 +154,19 @@ def get_count_by_type(x='', y='', type=0):
     return len(find_in_file)
 
 
-def get_all_counts(x='', y='', type=0):
-    pass
+def get_all_counts():
+    """ Выводит данные о всех типах для заданных размерностей
+    """
+    for x in range(1, 4):
+        for y in range(1, 4):
+            for type_item in range(3):
+                count = get_count_by_type(x, y, type_item)
+                if type_item == 0:
+                    type_info = 'strong connectedly'
+                elif type_item == 1:
+                    type_info = 'strong connectedly'
+                else:
+                    type_info = 'no connectedly'
+                print('For matrix {}x{} count for type {}={}'.format(x, y, type_info, count))
+            print()
+

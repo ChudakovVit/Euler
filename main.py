@@ -15,17 +15,7 @@ def main():
 
     # get_from_file(1, 2, 3)
 
-    with_type_0 = get_count_by_type(3, 3, 0)
-    print(with_type_0)
-
-    with_type_1 = get_count_by_type(3, 3, 1)
-    print(with_type_1)
-
-
-    with_type_2 = get_count_by_type(3, 3, 2)
-    print(with_type_2)
-
-    print('res :', with_type_1 + with_type_2)
+    get_all_counts()
     # generate_field(4, 5)
     # #
     # for i in range(3, 5):
