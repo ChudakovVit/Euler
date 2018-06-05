@@ -40,12 +40,12 @@ def add_info(k_dict):
     hi_2 = Label(root, text='Слабая связность: χ = {}    '.format(str(k_dict[4]+k_dict[9]-k_dict[12])), bg='grey',
                  justify=LEFT)
     hi_2.place(x=450, y=150)
-    hi_3 = Label(root, text='Связно сильно: {}'.format(FIELD.is_connectedly(type=0)), bg='grey',
-                 justify=LEFT)
-    hi_3.place(x=450, y=200)
-    hi_4 = Label(root, text='Связно слабо: {}'.format(FIELD.is_connectedly(type=1)), bg='grey',
-                 justify=LEFT)
-    hi_4.place(x=450, y=250)
+    # hi_3 = Label(root, text='Связно сильно: {}'.format(FIELD.is_connectedly(type=0)), bg='grey',
+    #              justify=LEFT)
+    # hi_3.place(x=450, y=200)
+    # hi_4 = Label(root, text='Связно слабо: {}'.format(FIELD.is_connectedly(type=1)), bg='grey',
+    #              justify=LEFT)
+    # hi_4.place(x=450, y=250)
 
 
 def on_click(event):

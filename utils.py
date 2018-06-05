@@ -55,11 +55,12 @@ def get_field_info_string():
     strong_connectedly = FIELD.is_connectedly(type=0)
     waek_connectedly = FIELD.is_connectedly(type=1)
 
-    if not any([strong_connectedly, waek_connectedly]):
-        return 'not_connectedly'
+    # if not any([strong_connectedly, waek_connectedly]):
+    #     return 'not_connectedly'
 
     k_dict = get_connectivity_count()
     return str({
+        'br': str(FIELD.is_borders_reached()),  # is borders reached
         'sc': str(strong_connectedly),  # strong connectedly
         'wc': str(waek_connectedly),  # weak connectedly
         's': str(k_dict[4] - k_dict[10] - k_dict[12]),  # strong

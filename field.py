@@ -110,8 +110,8 @@ class Field:
         def _get_first_fill(value=1):
             """ Возвращает первую закрашенную ячейку
             """
-            for i in range(1, FIELD.get_y_edging_size() - 1):
-                for j in range(1, FIELD.get_x_edging_size() - 1):
+            for i in range(1, self.get_y_edging_size() - 1):
+                for j in range(1, self.get_x_edging_size() - 1):
                     if field_copy[i][j] == value:
                         return i, j
             return -1, -1
@@ -127,7 +127,7 @@ class Field:
                         field_copy[x+i][y+j] = -1
                         _change_cells(x+i, y+j)
 
-        field_copy = list(list(item) for item in FIELD.add_edging())
+        field_copy = list(list(item) for item in self.add_edging())
         x, y = _get_first_fill()
         if x != -1:
             _change_cells(x, y)
@@ -137,6 +137,18 @@ class Field:
         if x != -1 and x_ != -1:
             return False
         return True
+
+    def is_borders_reached(self):
+        """ Возвращает признак достижения границ
+        """
+        field = self.field
+        border_lists = [field[0],
+                        field[self.get_y_side_size()-1],
+                        [item[0] for item in field],
+                        [item[self.get_x_side_size()-1] for item in field]
+        ]
+
+        return all([any(item) for item in border_lists])
 
 
 FIELD = Field()
