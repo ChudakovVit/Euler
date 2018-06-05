@@ -192,12 +192,15 @@ def get_all_counts():
 
             print('Сильно связных без границы: ', strong_without)
             print('Сильно связных с границей: ', strong_with)
-            print('Сильно связных всего: {} = {} + {}'.format(strong_all, strong_with, strong_without))
+            print('Сильно связных всего: ', strong_all)
+            print('(check: {} = {})'.format(strong_with + strong_without, strong_all))
 
             print('Слабо связных без границы: ', weak_without)
             print('Слабо связных с границей: ', weak_with)
-            print('Слабо связных всего: {} = {} + {}'.format(weak_all, weak_with, weak_without))
+            print('Слабо связных всего: ', weak_all)
+            print('(check: {} = {})'.format(weak_with + weak_without, weak_all))
 
-            print('Всего: {} = {} + {} + {}'.format(all_items_count, strong_all, weak_all, not_connectedly))
+            print('Всего: ', all_items_count)
+            print('(check: {} = {})'.format(weak_all + not_connectedly, all_items_count))
             print()
 
