@@ -133,7 +133,7 @@ def get_file_name(x='', y=''):
     return 'field_info{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
 
 
-def get_count_by_type(x='', y='', type=0):
+def get_count_by_type(x='', y='', con_type=-1, borders_reached=None):
     """
     Считает в заданном файле количество изображений того или иного типа
     :param x: Размерность матрицы
@@ -144,12 +144,26 @@ def get_count_by_type(x='', y='', type=0):
     file_name = get_file_name(x, y)
     file_read = open(file_name, 'r').read()
 
-    if type == 0:
-        pattern = '''sc': 'True'''
-    elif type == 1:
-        pattern = '''wc': 'True'''
-    else:
-        pattern = 'not_connectedly'
+    # br_pat = borders_reached if borders_reached is not None else r'.*?'
+    # sc_pat = not bool(con_type) if con_type != -1 else r'.*?' if con_type is not None else False
+    # wc_pat = bool(con_type) if con_type != -1 else r'.*?' if con_type is not None else False
+
+    br_pat = borders_reached
+    if borders_reached is None:
+        br_pat = r'.*?'
+
+    wc_pat = r'.*?'
+    sc_pat = True
+    if con_type is None:
+        br_pat = r'.*?'
+        sc_pat = wc_pat = False
+    elif con_type == -1:
+        sc_pat = wc_pat = r'.*?'
+    elif con_type == 1:
+        wc_pat = True
+        sc_pat = r'.*?'
+
+    pattern = r'''br': '{}', 'sc': '{}', 'wc': '{}'''.format(br_pat, sc_pat, wc_pat)
 
     find_in_file = re.findall(pattern, file_read)
     return len(find_in_file)
@@ -158,16 +172,32 @@ def get_count_by_type(x='', y='', type=0):
 def get_all_counts():
     """ Выводит данные о всех типах для заданных размерностей
     """
-    for x in range(1, 4):
-        for y in range(1, 4):
-            for type_item in range(3):
-                count = get_count_by_type(x, y, type_item)
-                if type_item == 0:
-                    type_info = 'strong connectedly'
-                elif type_item == 1:
-                    type_info = 'strong connectedly'
-                else:
-                    type_info = 'no connectedly'
-                print('For matrix {}x{} count for type {}={}'.format(x, y, type_info, count))
+    for x in range(1, 5):
+        for y in range(1, 5):
+            not_connectedly = get_count_by_type(x, y, None, None)
+
+            con_type = 0
+            strong_without = get_count_by_type(x, y, con_type, borders_reached=False)
+            strong_with = get_count_by_type(x, y, con_type, borders_reached=True)
+            strong_all = get_count_by_type(x, y, con_type, borders_reached=None)
+
+            con_type = 1
+            weak_without = get_count_by_type(x, y, con_type, borders_reached=False)
+            weak_with = get_count_by_type(x, y, con_type, borders_reached=True)
+            weak_all = get_count_by_type(x, y, con_type, borders_reached=None)
+
+            all_items_count = get_count_by_type(x, y, -1, borders_reached=None)
+
+            print('Несвязных: ', not_connectedly)
+
+            print('Сильно связных без границы: ', strong_without)
+            print('Сильно связных с границей: ', strong_with)
+            print('Сильно связных всего: {} = {} + {}'.format(strong_all, strong_with, strong_without))
+
+            print('Слабо связных без границы: ', weak_without)
+            print('Слабо связных с границей: ', weak_with)
+            print('Слабо связных всего: {} = {} + {}'.format(weak_all, weak_with, weak_without))
+
+            print('Всего: {} = {} + {} + {}'.format(all_items_count, strong_all, weak_all, not_connectedly))
             print()
 
