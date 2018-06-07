@@ -103,7 +103,7 @@ class Field:
     def is_connectedly(self, type=0):
         """
         Метод для определения связности поля
-        :param type: тип связности: 0 - сильная, 1 - слабая
+        :param type: тип связности: 0 - слабая, 1 - сильная
         :return: bool
         """
 

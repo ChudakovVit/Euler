@@ -52,11 +52,11 @@ def get_field_info_string():
     :return: str(dict)
     """
 
-    strong_connectedly = FIELD.is_connectedly(type=0)
-    waek_connectedly = FIELD.is_connectedly(type=1)
+    strong_connectedly = FIELD.is_connectedly(type=1)
+    waek_connectedly = FIELD.is_connectedly(type=0)
 
-    # if not any([strong_connectedly, waek_connectedly]):
-    #     return 'not_connectedly'
+    if not any([strong_connectedly, waek_connectedly]):
+        return None
 
     k_dict = get_connectivity_count()
     return str({
@@ -111,11 +111,12 @@ def file_output_field(x='', y=''):
     :param x: размер поля в высоту (если есть)
     :param y: размер поля в ширину (если есть)
     """
-    file_name = get_file_name(x, y)
-    file = open(file_name, 'a')  # w
     field_info = get_field_info_string()
-    file.write(field_info + '\n')
-    file.close()
+    if field_info:
+        file_name = get_file_name(x, y)
+        file = open(file_name, 'a')  # w
+        file.write(field_info + '\n')
+        file.close()
 
 
 def get_from_file(x='', y='', number=0):
@@ -130,7 +131,7 @@ def get_from_file(x='', y='', number=0):
 def get_file_name(x='', y=''):
     """ Хелпер для получения имени файла (для записи и чтения)
     """
-    return 'field_info{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
+    return 'field_info_f_{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
 
 
 def get_count_by_type(x='', y='', con_type=-1, borders_reached=None):
@@ -138,7 +139,7 @@ def get_count_by_type(x='', y='', con_type=-1, borders_reached=None):
     Считает в заданном файле количество изображений того или иного типа
     :param x: Размерность матрицы
     :param y: Размерность матрицы
-    :param type: 0 - сильно связные, 1 - слабо, 2 - несвязные
+    :param type: 0 - слабо связные, 1 - сильно, 2 - несвязные
     :return: Количество изобрабражений заданного типа в заданном файле
     """
     file_name = get_file_name(x, y)
@@ -169,38 +170,38 @@ def get_count_by_type(x='', y='', con_type=-1, borders_reached=None):
     return len(find_in_file)
 
 
-def get_all_counts():
+def get_all_counts(x='', y=''):
     """ Выводит данные о всех типах для заданных размерностей
     """
-    for x in range(1, 5):
-        for y in range(1, 5):
-            not_connectedly = get_count_by_type(x, y, None, None)
+    not_connectedly = get_count_by_type(x, y, None, None)
 
-            con_type = 0
-            strong_without = get_count_by_type(x, y, con_type, borders_reached=False)
-            strong_with = get_count_by_type(x, y, con_type, borders_reached=True)
-            strong_all = get_count_by_type(x, y, con_type, borders_reached=None)
+    con_type = 1
+    strong_without = get_count_by_type(x, y, con_type, borders_reached=False)
+    strong_with = get_count_by_type(x, y, con_type, borders_reached=True)
+    strong_all = get_count_by_type(x, y, con_type, borders_reached=None)
 
-            con_type = 1
-            weak_without = get_count_by_type(x, y, con_type, borders_reached=False)
-            weak_with = get_count_by_type(x, y, con_type, borders_reached=True)
-            weak_all = get_count_by_type(x, y, con_type, borders_reached=None)
+    con_type = 0
+    weak_without = get_count_by_type(x, y, con_type, borders_reached=False)
+    weak_with = get_count_by_type(x, y, con_type, borders_reached=True)
+    weak_all = get_count_by_type(x, y, con_type, borders_reached=None)
 
-            all_items_count = get_count_by_type(x, y, -1, borders_reached=None)
+    all_items_count = get_count_by_type(x, y, -1, borders_reached=None)
 
-            print('Несвязных: ', not_connectedly)
+    print('Для размерности {} на {}'.format(x, y))
+    print('Несвязных: ', not_connectedly)
 
-            print('Сильно связных без границы: ', strong_without)
-            print('Сильно связных с границей: ', strong_with)
-            print('Сильно связных всего: ', strong_all)
-            print('(check: {} = {})'.format(strong_with + strong_without, strong_all))
+    print('Сильно связных без границы: ', strong_without)
+    print('Сильно связных с границей: ', strong_with)
+    print('Сильно связных всего: ', strong_all)
+    # print('(check: {} = {})'.format(strong_with + strong_without, strong_all))
 
-            print('Слабо связных без границы: ', weak_without)
-            print('Слабо связных с границей: ', weak_with)
-            print('Слабо связных всего: ', weak_all)
-            print('(check: {} = {})'.format(weak_with + weak_without, weak_all))
+    print('Слабо связных без границы: ', weak_without)
+    print('Слабо связных с границей: ', weak_with)
+    print('Слабо связных всего: ', weak_all)
+    # print('(check: {} = {})'.format(weak_with + weak_without, weak_all))
 
-            print('Всего: ', all_items_count)
-            print('(check: {} = {})'.format(weak_all + not_connectedly, all_items_count))
-            print()
+    print('Всего: ', all_items_count)
+    print('{}x{} процент сильных {}; слабых {}'.format(x, y, strong_with/all_items_count, weak_with/all_items_count))
+    # print('(check: {} = {})'.format(weak_all + not_connectedly, all_items_count))
+    print()
 

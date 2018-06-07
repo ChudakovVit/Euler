@@ -34,7 +34,7 @@ def generate_field(x, y):
     :param y: ширина
     :return:
     """
-    for i in range(2**(x*y)):
+    for i in range(18000000, 20000000):
         print(i)
         FIELD.set(get_field_from_number(i, x, y))
         FIELD.set_x_side_size(x+2)
