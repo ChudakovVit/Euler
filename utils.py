@@ -119,89 +119,108 @@ def file_output_field(x='', y=''):
         file.close()
 
 
-def get_from_file(x='', y='', number=0):
-    """ Берем строку из файла
-    """
-    file_name = get_file_name(x, y)
-    file_lines = open(file_name, 'r').readlines()
-
-    return get_field_info_eval(file_lines.pop(number))
-
-
 def get_file_name(x='', y=''):
     """ Хелпер для получения имени файла (для записи и чтения)
     """
-    return 'field_info_f_{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
+    return 'field_info{}.txt'.format('_' + (str(x) + '_' + str(y)) if x and y else '')
 
 
-def get_count_by_type(x='', y='', con_type=-1, borders_reached=None):
+def get_count_by_type(con_type=0, borders_reached=None, file_name=None):
+    """ Считает в заданном файле количество изображений того или иного типа
     """
-    Считает в заданном файле количество изображений того или иного типа
-    :param x: Размерность матрицы
-    :param y: Размерность матрицы
-    :param type: 0 - слабо связные, 1 - сильно, 2 - несвязные
-    :return: Количество изобрабражений заданного типа в заданном файле
-    """
-    file_name = get_file_name(x, y)
     file_read = open(file_name, 'r').read()
-
-    # br_pat = borders_reached if borders_reached is not None else r'.*?'
-    # sc_pat = not bool(con_type) if con_type != -1 else r'.*?' if con_type is not None else False
-    # wc_pat = bool(con_type) if con_type != -1 else r'.*?' if con_type is not None else False
 
     br_pat = borders_reached
     if borders_reached is None:
         br_pat = r'.*?'
 
-    wc_pat = r'.*?'
-    sc_pat = True
-    if con_type is None:
-        br_pat = r'.*?'
-        sc_pat = wc_pat = False
-    elif con_type == -1:
-        sc_pat = wc_pat = r'.*?'
-    elif con_type == 1:
-        wc_pat = True
-        sc_pat = r'.*?'
+    wc_pat = r'.*?' if con_type == 1 else True
 
-    pattern = r'''br': '{}', 'sc': '{}', 'wc': '{}'''.format(br_pat, sc_pat, wc_pat)
+    pattern = r'''br': '{}', 'sc': 'True', 'wc': '{}'''.format(br_pat, wc_pat)
 
     find_in_file = re.findall(pattern, file_read)
     return len(find_in_file)
 
 
-def get_all_counts(x='', y=''):
+def get_all_counts(x='', y='', files_list=None):
     """ Выводит данные о всех типах для заданных размерностей
     """
-    not_connectedly = get_count_by_type(x, y, None, None)
 
-    con_type = 1
-    strong_without = get_count_by_type(x, y, con_type, borders_reached=False)
-    strong_with = get_count_by_type(x, y, con_type, borders_reached=True)
-    strong_all = get_count_by_type(x, y, con_type, borders_reached=None)
+    strong_with = 0
+    strong_all = 0
 
-    con_type = 0
-    weak_without = get_count_by_type(x, y, con_type, borders_reached=False)
-    weak_with = get_count_by_type(x, y, con_type, borders_reached=True)
-    weak_all = get_count_by_type(x, y, con_type, borders_reached=None)
+    weak_with = 0
+    weak_all = 0
 
-    all_items_count = get_count_by_type(x, y, -1, borders_reached=None)
+    if not files_list:
+        files_list = [get_file_name(x, y)]
 
-    print('Для размерности {} на {}'.format(x, y))
-    print('Несвязных: ', not_connectedly)
+    for file_name in files_list:
+        con_type = 1
+        strong_with += get_count_by_type(con_type, borders_reached=True, full_file_name=file_name)
+        strong_all += get_count_by_type(con_type, borders_reached=None, full_file_name=file_name)
 
-    print('Сильно связных без границы: ', strong_without)
+        con_type = 0
+        weak_with = get_count_by_type(con_type, borders_reached=True, full_file_name=file_name)
+        weak_all = get_count_by_type(con_type, borders_reached=None, full_file_name=file_name)
+
+    print('Для файлов ' + str(files_list))
+
     print('Сильно связных с границей: ', strong_with)
     print('Сильно связных всего: ', strong_all)
-    # print('(check: {} = {})'.format(strong_with + strong_without, strong_all))
 
-    print('Слабо связных без границы: ', weak_without)
     print('Слабо связных с границей: ', weak_with)
     print('Слабо связных всего: ', weak_all)
-    # print('(check: {} = {})'.format(weak_with + weak_without, weak_all))
 
-    print('Всего: ', all_items_count)
-    print('{}x{} процент сильных {}; слабых {}'.format(x, y, strong_with/all_items_count, weak_with/all_items_count))
-    # print('(check: {} = {})'.format(weak_all + not_connectedly, all_items_count))
     print()
 
+
+def get_count_uniq_new(x='', y='', con_type=0, files_list=None):
+    """ Выводит данные о различимых изображениях
+    """
+
+    all_dict = {}
+
+    if not files_list:
+        files_list = [get_file_name(x, y)]
+
+    all_files_border_reached = 0
+
+    for file_name in files_list:
+        file_lines = open(file_name, 'r').readlines()
+
+        border_reached = 0
+        for line in file_lines:
+            if not re.findall('''br': 'True''', line):
+                continue
+            line_con_type = 1
+            if con_type == 0:
+                if re.findall('''wc': 'True''', line):
+                    line_con_type = 0
+
+            if con_type != line_con_type:
+                continue
+            border_reached += 1
+
+            k_dict = line[line.index(''', 'c''') + 7:]
+            if k_dict in all_dict:
+                all_dict[k_dict] += 1
+            else:
+                all_dict[k_dict] = 1
+
+        all_files_border_reached += border_reached
+
+    unic_count = 0
+    max_value = 1
+    for key, value in all_dict.items():
+        if value == 1:
+            unic_count += 1
+        if value > max_value:
+            max_value = value
+
+    print('Тип связности: ' + str(con_type) +
+          ' Количество уникальных: ' + str(unic_count) +
+          ' Максимально встречается раз один и тот же набор: ' + str(max_value) +
+          ' Всего типов наборов: ' + str(len(all_dict)) +
+          ' Достигается граница: ' + str(all_files_border_reached)
+    )
